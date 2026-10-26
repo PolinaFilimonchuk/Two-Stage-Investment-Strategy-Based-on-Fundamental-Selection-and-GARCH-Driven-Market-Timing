@@ -1,5 +1,5 @@
 # Two-Stage-Investment-Strategy-Based-on-Fundamental-Selection-and-GARCH-Driven-Market-Timing
-### Analiza statystyk opisowych
+### Descriptive statistics analysis
 
 library(readxl)
 library(tidyverse)
@@ -36,7 +36,7 @@ ggplot(dane_long, aes(x = reorder(Spolka, PS, FUN = median), y = PS, fill = Spol
   theme_minimal() +
   theme(legend.position = "none")
 
-### Sprawdzanie stacjonarności za pomocą rozszerzonego testu ADF
+### Checking for stationarity using the augmented ADF test
 
 
 sprawdz_stacjonarnosc <- function(seria) {
@@ -58,7 +58,7 @@ stacjonarne <- wyniki_adf %>% filter(P_Value < 0.05)
 cat("\nSpółki ze stacjonarnym wskaźnikiem P/S w poziomie (p < 0.05):\n")
 print(stacjonarne$Spolka)
 
-### Logarytmiczne stopy zwrotu 
+### Logarithmic rates of return
 
 dane_log_diff <- dane %>%
   mutate(across(-Data, ~ log(.x) - log(lag(.x)))) %>%
@@ -81,7 +81,7 @@ stacjonarne_diff <- wyniki_adf_diff %>% filter(P_Value < 0.05)
 cat("\nSpółki ze stacjonarnymi logarytmicznymi zmianami P/S (p < 0.05):\n")
 print(stacjonarne_diff$Spolka)
 
-####Druga różnica 
+#### The second difference
 
 dane_log_diff2 <- dane %>%
   mutate(across(-Data, ~ c(NA, NA, diff(log(.x), differences = 2)))) %>%
@@ -106,7 +106,7 @@ nierozwiazane <- wyniki_adf %>% filter(P_Value < 0.05)
 cat("\nSpółki ze stacjonarnym wskaźnikiem P/S w poziomie (p < 0.05):\n")
 print(nierozwiazane$Spolka)
 
-###Test ARCH-LM
+### Test ARCH-LM
 
 
 library(FinTS) 
@@ -142,7 +142,7 @@ istotne_arch <- wyniki_arch_stabilne %>% filter(P_Value_ARCH < 0.05)
 cat("\nSpółki z istotnym efektem ARCH (p < 0.05):\n")
 print(istotne_arch$Spolka)
 
-### Opóźnienia 2 rzędu
+### Second-order delays
 
 testuj_arch_lags2 <- function(seria) {
   tryCatch({
@@ -171,7 +171,7 @@ istotne_arch2 <- wyniki_arch_lags2 %>% filter(P_Value_ARCH < 0.05)
 cat("\nSpółki z istotnym efektem ARCH przy lags = 2 (p < 0.05):\n")
 print(istotne_arch2$Spolka)
 
-### Estymacja modelu GARCH(1,1)
+### Estimation of a GARCH(1,1) model
 
 library(fGarch)
 
