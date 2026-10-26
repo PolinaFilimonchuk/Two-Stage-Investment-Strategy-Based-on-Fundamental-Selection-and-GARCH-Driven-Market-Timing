@@ -1,0 +1,1 @@
+# Two-Stage-Investment-Strategy-Based-on-Fundamental-Selection-and-GARCH-Driven-Market-Timing
